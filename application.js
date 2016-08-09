@@ -1,26 +1,32 @@
-// Source: https://www.sitepoint.com/getting-started-slack-bots/
-
-var helloworldbot = require('./helloworldbot');
-app.post('/helloworld', helloworldbot);
-
 var express = require('express');
 var bodyParser = require('body-parser');
-var application = express();
-var port = process.env.PORT || 3000
 
-app.use(bodyParser.urlencoded({ extended: true}));
+var app = express();
+var port = process.env.PORT || 1337;
+
+// body parser middleware
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // test route
-app.get('/', function(req, res){
-    res.status(200).send('Hello World')
-});
-// error handler
-app.use(function(err, req, res,next)){
-    console.error(err.stack);
-    res.status(400).send(err.message);
-});
+app.get('/', function (req, res) { res.status(200).send('Hello world!'); });
 
-// Server listening
-app.listen(port, function() {
-           console.log('Slack bot listening on port' + port)
-});
+app.listen(port, function () {
+           console.log('Listening on port ' + port);
+           });
+
+app.post('/hello', function (req, res, next) {
+         var userName = req.body.user_name;
+         // loan_volume: R object (variable) storing number of   loans
+         var loanvolume = console.r.get("loan_volume");
+  
+  
+         var botPayload = {
+         text : 'Hello ' + userName + ',' + 'we currently      financed ' + loanvolume + 'loans'
+         };
+         // Loop otherwise..
+         if (userName !== 'slackbot') {
+         return res.status(200).json(botPayload);
+         } else {
+         return res.status(200).end();
+         }
+         });
