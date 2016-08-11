@@ -1,0 +1,83 @@
+<html>
+
+	<head>
+
+		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="//cdn.opencpu.org/opencpu-0.4.js"></script>
+
+	</head>
+
+	<body>
+
+		<button onclick="application()">SlackBot App</button>
+
+	</body>
+
+</html>
+
+<script>
+	
+	var application = function(){
+		var express = require('express');
+		var bodyParser = require('body-parser');
+
+		var app = express();
+		var port = process.env.PORT || 1337;
+
+		// body parser middleware
+		app.use(bodyParser.urlencoded({ extended: true }));
+
+		// test route
+		app.get('/', function (req, res) { res.status(200).send('Hello world!'); });
+
+		// Routes
+
+		// var helloRouter = express.Router();
+
+		// helloRouter.get('/', function(req, res){
+		//     res.json({
+		//         message: 'welcome to RESTful api!'
+		//     });
+		// });
+
+
+		// app.use('/RESTfulapi', helloRouter);
+		app.post('/', function (req, res) { res.status(200).send('Hello world!'); });
+		app.post('/hello', function (req, res, next) {
+		         var userName = req.body.user_name;
+		         
+		         // loan_volume: R object storing number of loans
+		         console.log("testing method");
+		         //var loanvolume = console.r.get(loan_volume);
+		        
+		        var loanvolume = 100;
+		         var ocpuRequest = ocpu.rpc("loanInfo"){
+		    		loanvolume: loanvolume
+				}, function(){
+		    		console.log("Financed " + loanvolume + " loans");
+				}
+
+		         console.log(loanvolume);
+		        //var loanvolume = 548;
+
+		         var botPayload = {
+		         text : 'Hello ' + userName + ',' + 'we currently financed ' + loanvolume + 'loans'
+		         };
+		         // Loop otherwise..
+		         if (userName !== 'slackbot') {
+		         return res.status(200).json(botPayload);
+		         } else {
+		         return res.status(200).end();
+		         }
+		         });
+
+
+		app.listen(port, function () {
+		           console.log('Listening on port ' + port);
+		           });
+
+	}
+	
+
+	
+</script>
